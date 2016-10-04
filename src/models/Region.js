@@ -17,10 +17,6 @@ module.exports = (db,cb)=>{
          */
         idRegion : { type: 'serial', key: true },
         name: String
-    },{
-        methods:{
-            sayYeah : ()=> this.name + " :)"
-        }
     });
     return cb();
 }

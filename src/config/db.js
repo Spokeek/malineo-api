@@ -12,6 +12,8 @@ let connectionSucess = (err, db) => {
         var Region = db.models.region;
         var City = db.models.city;
 
+      //  Region.hasMany("city",{})
+
          db.sync((err) => {
             if (err) throw err;
 
