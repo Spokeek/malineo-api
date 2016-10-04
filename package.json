@@ -1,0 +1,30 @@
+{
+  "name": "malineo-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Spokeek/malineo-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Spokeek/malineo-api/issues"
+  },
+  "homepage": "https://github.com/Spokeek/malineo-api#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "common-env": "^6.0.0",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "lodash": "^4.16.3",
+    "mariasql": "^0.2.6",
+    "morgan": "^1.7.0",
+    "mysql": "^2.11.1",
+    "orm": "^3.1.0"
+  }
+}
