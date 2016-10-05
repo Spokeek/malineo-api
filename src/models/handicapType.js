@@ -7,14 +7,14 @@ class HandicapType{
         
         return new Promise((resolve,reject)=>{
             connection.query("SELECT * from `handicapType` WHERE `idHandicapType`= ?",[id],
-            (err,res)=> City.handleRequest(err,res,resolve,reject))
+            (err,res)=> HandicapType.handleRequest(err,res,resolve,reject))
         });
     }
     static getAll(connection){
 
         return new Promise((resolve,reject)=>{
             connection.query("SELECT * from handicapType",
-            (err,res)=> City.handleRequest(err,res,resolve,reject))
+            (err,res)=> HandicapType.handleRequest(err,res,resolve,reject))
         });
     }
     
@@ -25,4 +25,4 @@ class HandicapType{
     }
 
 }
-module.exports = City;
+module.exports = HandicapType;
