@@ -1,27 +1,15 @@
 "use strict";
 const config = require("./env");
-const orm = require("orm");
-// Or you can simply use a connection uri
-let connection = `mysql://${config.user}:${config.password}@${config.host}:${config.port}/malineo`;
+const mysql = require("mysql");
 
-let connectionSucess = (err, db) => {
-    if (err) throw err;
 
-    db.load("../models/model", (err) => {
-        if (err) throw err;
-        var Region = db.models.region;
-        var City = db.models.city;
+let connection =  mysql.createConnection({
+    host:config.host,
+    user:config.user,
+    password:config.password,
+    database: config.database
+});
+connection.connect();
+module.exports = connection;
 
-      //  Region.hasMany("city",{})
 
-         db.sync((err) => {
-            if (err) throw err;
-
-            Region.get(1, (err, region) => {
-                if (err) console.log(err);
-                console.log(region.name);
-            });
-        })
-    });
-}
-orm.connect(connection, connectionSucess);

@@ -1,22 +1,35 @@
-/**
- * module.exports permet d'accéder aux variables qu'il y a dans ce fichier,
- * un peu comme les namespace en c#
- * 
- * ce module prend deux parametres, obligatoires par ORM (l'orm qu'on utilise)
- * 
- * documentation : https://github.com/dresende/node-orm2
- */
-module.exports = (db,cb)=>{
+"use strict";
 
-/**
- * le db.define sert a créer la classe qui nous servira de model
- */
-    db.define("region",{
-        /**
-         * idRegion 
-         */
-        idRegion : { type: 'serial', key: true },
-        name: String
-    });
-    return cb();
+class Region{
+    constructor(){ }
+
+    static getOne(id,connection){
+        
+        return new Promise((resolve,reject)=>{
+            connection.query("SELECT * from `region` WHERE `idRegion`= ?",[id],
+            (err,res)=> Region.handleRequest(err,res,resolve,reject))
+        })
+    }
+    static getAll(connection){
+
+        return new Promise((resolve,reject)=>{
+            connection.query("SELECT * from region",
+            (err,res)=> Region.handleRequest(err,res,resolve,reject))
+        })
+    }
+    
+    static handleRequest(error,results,resolve,reject){
+
+        if (error) reject(error);     
+        resolve(results);
+    }
+    static create(connection, name){
+        return new Promise((resolve,reject)=>{
+
+            let region = {"name":name}
+            connection.query("INSERT INTO region SET ?",[region],
+            (err,res)=> Region.handleRequest(err,res,resolve,reject))
+        })
+    }
 }
+module.exports = Region;
