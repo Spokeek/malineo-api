@@ -6,10 +6,12 @@ class City{
     static getOne(id,connection){
         
         return new Promise((resolve,reject)=>{
+
             connection.query("SELECT * from `city` WHERE `idCity`= ?",[id],
             (err,res)=> City.handleRequest(err,res,resolve,reject))
         });
     }
+
     static getAll(connection){
 
         return new Promise((resolve,reject)=>{
@@ -32,3 +34,4 @@ class City{
     }
 }
 module.exports = City;
+

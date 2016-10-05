@@ -1,7 +1,10 @@
 "use strict";
-const City = require("../models/city");
 
 module.exports = (app, db) => {
+
+    const City = require("../models/city");
+    const auth = require("../services/auth")(app, db);
+    const requireAuth = auth.requireAuth;
 
     let getOneCity = (req, res) => {
 
@@ -15,24 +18,33 @@ module.exports = (app, db) => {
             }
         );
     }
-
     let getAllCities = (req, res) => {
         City.getAll(db).then(
             (results) => res.status(200).send(JSON.stringify(results)),
-            (err) => { throw err }
+            (err) => {
+                throw err
+            }
         );
     }
-
-    let createCity = (req,res) =>{
+    let createCity = (req, res) => {
         let name = req.body.name;
         let postalCode = req.body.postalCode;
         let idRegion = req.body.idRegion;
-        City.create(db,name,postalCode,idRegion).then(
-             (results) => res.status(200).send(JSON.stringify(results)),
-            (err) => { throw err }
+        City.create(db, name, postalCode, idRegion).then(
+            (results) => res.status(200).send(JSON.stringify(results)),
+            (err) => {
+                throw err
+            }
         )
     }
-    app.get("/city/:id", getOneCity);
+
+
+
+
+
+    app.get("/city/:id",getOneCity);
+
     app.get("/city", getAllCities);
-    app.post("/city",createCity)
+
+    app.post("/city", createCity)
 }
