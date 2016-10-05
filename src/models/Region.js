@@ -6,14 +6,14 @@ class Region{
     static getOne(id,connection){
         
         return new Promise((resolve,reject)=>{
-            connection.query("SELECT * from `region` WHERE `idRegion`= ?",[id],
+            connection.query("SELECT * FROM `region` WHERE `idRegion`= ?",[id],
             (err,res)=> Region.handleRequest(err,res,resolve,reject))
         })
     }
     static getAll(connection){
 
         return new Promise((resolve,reject)=>{
-            connection.query("SELECT * from region",
+            connection.query("SELECT * FROM `region`",
             (err,res)=> Region.handleRequest(err,res,resolve,reject))
         })
     }
@@ -27,7 +27,7 @@ class Region{
         return new Promise((resolve,reject)=>{
 
             let region = {"name":name}
-            connection.query("INSERT INTO region SET ?",[region],
+            connection.query("INSERT INTO `region` SET ?",[region],
             (err,res)=> Region.handleRequest(err,res,resolve,reject))
         })
     }

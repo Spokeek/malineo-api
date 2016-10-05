@@ -18,14 +18,14 @@ class User{
     static getOne(id,connection){
         
         return new Promise((resolve,reject)=>{
-            connection.query("SELECT * from `user` WHERE `idUser`= ?",[id],
+            connection.query("SELECT * FROM `user` WHERE `idUser`= ?",[id],
             (err,res)=> User.handleRequest(err,res,resolve,reject))
         })
     }
     static getAll(connection){
 
         return new Promise((resolve,reject)=>{
-            connection.query("SELECT * from user",
+            connection.query("SELECT * FROM `user`",
             (err,res)=> User.handleRequest(err,res,resolve,reject))
         })
     }
@@ -39,7 +39,7 @@ class User{
      
         return new Promise((resolve,reject)=>{
 
-            connection.query("INSERT INTO user SET ?",[user],
+            connection.query("INSERT INTO `user` SET ?",[user],
             (err,res)=> User.handleRequest(err,res,resolve,reject))
         })
     }
