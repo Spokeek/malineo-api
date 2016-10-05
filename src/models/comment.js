@@ -23,10 +23,20 @@ class Comment{
         if (error) reject(error);     
         resolve(results);
     }
-    static create(connection, content,date){
+    static create(connection, content,date,idUser,idLocation){
         return new Promise((resolve,reject)=>{
             let comment = {"content":content,"date":date}
             connection.query("INSERT INTO `comment` SET ?",[comment],
+            (err,res)=> {
+                let id = res.insertId;
+            });
+        })
+    }
+//UCL= User_comment_Location
+        static createUser_Comment_Location(connection, idUser,idLocation,idComment){
+        return new Promise((resolve,reject)=>{
+            let UCL = {"user_idUser":idUser,"location_idLocation":idLocation,"comment_idComment":idComment}
+            connection.query("INSERT INTO `user_comment_location` SET ?",[UCL],
             (err,res)=> Comment.handleRequest(err,res,resolve,reject));
         })
     }
