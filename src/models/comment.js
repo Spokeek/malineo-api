@@ -6,14 +6,14 @@ class Comment{
     static getOne(id,connection){
         
         return new Promise((resolve,reject)=>{
-            connection.query("SELECT * from `comment` WHERE `idComment`= ?",[id],
+            connection.query("SELECT * FROM `comment` WHERE `idComment`= ?",[id],
             (err,res)=> Comment.handleRequest(err,res,resolve,reject))
         });
     }
     static getAll(connection){
 
         return new Promise((resolve,reject)=>{
-            connection.query("SELECT * from comment",
+            connection.query("SELECT * FROM `comment`",
             (err,res)=> Comment.handleRequest(err,res,resolve,reject))
         });
     }
@@ -26,7 +26,7 @@ class Comment{
     static create(connection, content,date){
         return new Promise((resolve,reject)=>{
             let comment = {"content":content,"date":date}
-            connection.query("INSERT INTO comment SET ?",[comment],
+            connection.query("INSERT INTO `comment` SET ?",[comment],
             (err,res)=> Comment.handleRequest(err,res,resolve,reject));
         })
     }

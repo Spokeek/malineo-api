@@ -6,14 +6,14 @@ class HandicapType{
     static getOne(id,connection){
         
         return new Promise((resolve,reject)=>{
-            connection.query("SELECT * from `handicapType` WHERE `idHandicapType`= ?",[id],
+            connection.query("SELECT * FROM `handicapType` WHERE `idHandicapType`= ?",[id],
             (err,res)=> HandicapType.handleRequest(err,res,resolve,reject))
         });
     }
     static getAll(connection){
 
         return new Promise((resolve,reject)=>{
-            connection.query("SELECT * from handicapType",
+            connection.query("SELECT * FROM `handicapType`",
             (err,res)=> HandicapType.handleRequest(err,res,resolve,reject))
         });
     }
