@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = (app, db) => {
-
+    const wrap = require("../services/wrap");
     const Comment = require("../models/comment");
     const auth = require("../services/auth")(app, db);
     const requireAuth = auth.requireAuth;
@@ -11,7 +11,7 @@ module.exports = (app, db) => {
 
         Comment.getOne(id,db).then(
             (results) =>
-                res.status(200).send(JSON.stringify(results.pop())),
+                res.status(200).send(JSON.stringify({"comment":results.pop()})),
             (err) => {
                 throw err
             }
@@ -19,7 +19,7 @@ module.exports = (app, db) => {
     }
     let getAllComment = (req, res) => {
         Comment.getAll(db).then(
-            (results) => res.status(200).send(JSON.stringify(results)),
+            (results) => res.status(200).send(JSON.stringify(wrap(results,"comment"))),
             (err) => { throw err }
         );
     }
@@ -31,7 +31,7 @@ module.exports = (app, db) => {
         let idLocation = req.body.idLocation;
         Comment.create(db,content,date,idUser,idLocation)
         .then(
-            (results)=>res.status(200).send(JSON.stringify(results)),
+            (results)=>res.status(200).send(JSON.stringify({"comment":results})),
             (err) =>res.status(500).send("we could not create this comment :(")
         );
     }
@@ -41,7 +41,7 @@ module.exports = (app, db) => {
 
         Comment.getCommentByUser(db,id).then(
             (results) =>
-                res.status(200).send(JSON.stringify(results)),
+                res.status(200).send(JSON.stringify(wrap(results,"comment"))),
             (err) => 
                 res.status(404).send("can't find comments for this user")
         )
@@ -52,7 +52,7 @@ module.exports = (app, db) => {
 
         Comment.getCommentByLocation(db,id).then(
             (results) =>
-                res.status(200).send(JSON.stringify(results)),
+                res.status(200).send(JSON.stringify(wrap(results,"comment"))),
             (err) => 
                 res.status(404).send("can't find comments for this location")
         );

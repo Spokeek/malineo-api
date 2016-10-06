@@ -6,12 +6,12 @@ with the folowing content :
 ```json
 
 module.exports = {
-    host :"127.0.0.1",
-    user :"",
-    password :"",
-    port : "3306",
-    database : "malineo",
-    saltRounds : 10
+    "host" :"127.0.0.1",
+    "user" :"",
+    "password" :"",
+    "port" : "3306",
+    "database" : "malineo",
+    "saltRounds" : 10
 };
 
 ```

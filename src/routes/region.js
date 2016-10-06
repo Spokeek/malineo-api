@@ -2,14 +2,14 @@
 const Region = require("../models/region");
 
 module.exports = (app, db) => {
-
+    const wrap = require("../services/wrap");
     let getOneRegion = (req, res) => {
 
         let id = req.params.id;
         Region.getOne(id, db).then(
 
             (results) =>
-            res.status(200).send(JSON.stringify(results.pop())),
+            res.status(200).send(JSON.stringify({"region":results.pop()})),
             (err) => {
                 throw err
             }
@@ -18,7 +18,7 @@ module.exports = (app, db) => {
 
     let getAllRegions = (req, res) => {
         Region.getAll(db).then(
-            (results) => res.status(200).send(JSON.stringify(results)),
+            (results) => res.status(200).send(JSON.stringify(wrap(results,"region"))),
             (err) => { throw err }
         );
     }
@@ -26,7 +26,7 @@ module.exports = (app, db) => {
     let createRegion = (req,res) =>{
         let name = req.body.name;
         Region.create(db,name).then(
-             (results) => res.status(200).send(JSON.stringify(results)),
+             (results) => res.status(200).send(JSON.stringify({"region":results})),
             (err) => { throw err }
         )
     }

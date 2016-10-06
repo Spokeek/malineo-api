@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = (app, db) => {
+    const wrap = require("../services/wrap");
     const uuid = require("uuid");
     const Location = require("../models/location");
     const auth = require("../services/auth")(app, db);
@@ -9,13 +10,13 @@ module.exports = (app, db) => {
         let id = req.params.id;
         Location.getOne(id,db).then(
             (response)=>
-             res.status(200).send(JSON.stringify(results.pop())),
+             res.status(200).send(JSON.stringify({"location":results.pop()})),
             (err)=> {throw err}
         )
     }
     let getAllLocations = (req,res)=>{
         Location.getAll(db).then(
-            (results) => res.status(200).send(JSON.stringify(results)),
+            (results) => res.status(200).send(JSON.stringify(wrap(results,"location"))),
             (err) => { throw err }
         );
     }
@@ -36,7 +37,7 @@ module.exports = (app, db) => {
 
         Location.create(db,location)
             .then(
-                (results)=>res.status(200).send(JSON.stringify(results)),
+                (results)=>res.status(200).send(JSON.stringify({"location":results})),
                 (err) =>console.log(err)
             )
     }

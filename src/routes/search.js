@@ -6,6 +6,7 @@ module.exports = (app, db) => {
     const requireAuth = auth.requireAuth;
     const City = require("../models/city");
     const Location = require("../models/location");
+    const wrap = require("../services/wrap");
 
     let searchByCity = (req, res) => {
 
@@ -23,7 +24,7 @@ module.exports = (app, db) => {
 
         let name = req.params.name;
         Location.getByName(db,name).then(
-            (results)   =>  res.status(200).send(JSON.stringify(results)),
+            (results)   =>  res.status(200).send(JSON.stringify({"location":results})),
             (err)       =>  res.status(404).send(err) 
         )
 
@@ -34,7 +35,7 @@ module.exports = (app, db) => {
         let handicapType = req.params.handicap;
         Location.getByHandicapType(db,handicapType)
         .then(
-            (results)   =>  res.status(200).send(JSON.stringify(results)),
+            (results)   =>  res.status(200).send(JSON.stringify(wrap(results,"location"))),
             (err)       =>  res.status(404).send(err)                        
         )
     };
@@ -45,7 +46,8 @@ module.exports = (app, db) => {
 
         Location.getByRegion(db,region)
         .then(
-            (results)   =>  res.status(200).send(JSON.stringify(results)),
+            (results)   =>  res.status(200).send(JSON.stringify(wrap(results,"location"))),
+
             (err)       =>  res.status(404).send( err) 
         )
     };
@@ -55,7 +57,8 @@ module.exports = (app, db) => {
 
         Location.getByPostalcode(db,code)
         .then(
-            (results)   =>  res.status(200).send(JSON.stringify(results)),
+            (results)   =>  res.status(200).send(JSON.stringify(wrap(results,"location"))),
+
             (err)       =>  res.status(404).send(err)            
         )
     }
