@@ -31,7 +31,6 @@ module.exports = (app, db) => {
 
         User.generatePwd(req.body.password).then(            
             (hash) => {
-
                 let user = {
                     "idUser" : uuid.v4(),
                     "username": req.body.username,
@@ -42,8 +41,7 @@ module.exports = (app, db) => {
                     "lastName": req.body.lastName,
                     "birth" : new Date()
                    // "birth": JSON.parse(req.body.birth)
-                }
-              
+                }              
                 User.create(db, user).then(
                     (results) => res.status(200).send(JSON.stringify(results)),
                     (err) => {throw err}
@@ -55,7 +53,21 @@ module.exports = (app, db) => {
         )
 
     }
+
+    let loginUser = (req,res)=>{
+        let user = {         
+            "password": req.body.password,
+            "mail": req.body.mail,
+        }              
+        User.login(db,user).then(
+            (results) => res.status(200).send(JSON.stringify(results)),
+            (err) =>console.log(err)
+        )
+    }
+
     app.get("/user/:id", getOneUser);
     app.get("/user", getAllUsers);
-    app.post("/user", createUser)
+
+    app.post("/user/login",loginUser)
+    app.post("/user/create", createUser)
 }

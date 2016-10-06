@@ -31,9 +31,18 @@ class User{
     }
     
     static handleRequest(error,results,resolve,reject){
-        console.log("->",error)
+        console.log(error,results)
         if (error) reject(error);     
         resolve(results);
+    }
+    static testPwd(hash,pwd){
+
+    }
+    static login(connection, user){
+        return new Promise((resolve,reject)=>{
+            connection.query("SELECT * FROM user WHERE mail=?",[user.mail],
+            (err,res)=> User.handleRequest(err,res,resolve,reject))
+        });
     }
     static create(connection, user){
      
