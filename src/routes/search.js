@@ -55,7 +55,5 @@ module.exports = (app, db) => {
     app.get("/search/region/:region",searchByRegion);
     app.get("/search/postalcode/:code",searchByPostalcode);
   //  app.get("/search/handicapType")
-// code postal
- //region
  //type handicap 
 }
