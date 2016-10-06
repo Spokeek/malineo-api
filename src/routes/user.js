@@ -39,7 +39,7 @@ module.exports = (app, db) => {
                     "phoneNumber": req.body.phoneNumber,
                     "firstName": req.body.firstName,
                     "lastName": req.body.lastName,
-                    "birth" : new Date()
+                    "birth" : new Date(req.body.bith)
                    // "birth": JSON.parse(req.body.birth)
                 }              
                 User.create(db, user).then(

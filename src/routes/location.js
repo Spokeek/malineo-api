@@ -21,17 +21,20 @@ module.exports = (app, db) => {
     }
     let createLocation = (req,res)=>{
 
-        let name = req.body.name;
-        let idLocation = uuid.v4();
-        let coordonateX = req.body.coordonateX
-        let coordonateY = req.body.coordonateY;
-        let image = req.body.image;
-        let contact = req.body.image;
-        let idCity = req.body.idCity;
+        let location = {
+         name : req.body.name,
+         idLocation : uuid.v4(),
+         coordonateX : req.body.coordonateX,
+         coordonateY : req.body.coordonateY,
+         image : req.body.image,
+         contact : req.body.contact,
+         city_idCity : req.body.idCity
+        };
+
 
         
-        console.log(Location);
-        Location.create(db,idLocation, name, coordonateX, coordonateY, image, contact, idCity)
+
+        Location.create(db,location)
             .then(
                 (results)=>res.status(200).send(JSON.stringify(results)),
                 (err) =>console.log(err)

@@ -55,17 +55,8 @@ class Location {
         console.log("->",error);
         resolve(results);
     }
-    static create(connection,idLocation ,name, coordonateX, coordonateY, image, contact, idCity) {
-        return new Promise((resolve, reject) => {
-            let location = {
-                "idLocation":idLocation,
-                "name": name,
-                "coordonateX": coordonateX,
-                "coordonateY": coordonateY,
-                "image": image,
-                "contact": contact,
-                "city_idCity": idCity
-            }
+    static create(connection,location) {
+        return new Promise((resolve, reject) => {            
 
             connection.query("INSERT INTO location SET ?", [location],
                 (err, res) => {
