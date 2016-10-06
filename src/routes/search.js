@@ -29,6 +29,16 @@ module.exports = (app, db) => {
 
     }
 
+    let searchByHandicapType = (req,res)=>{
+
+        let handicapType = req.params.handicap;
+        Location.getByHandicapType(db,handicapType)
+        .then(
+            (results)   =>  res.status(200).send(JSON.stringify(results)),
+            (err)       =>  res.status(404).send(err)                        
+        )
+    };
+
     let searchByRegion = (req,res) =>{
 
         let region = req.params.region;
@@ -38,7 +48,7 @@ module.exports = (app, db) => {
             (results)   =>  res.status(200).send(JSON.stringify(results)),
             (err)       =>  res.status(404).send( err) 
         )
-    }
+    };
 
     let searchByPostalcode = (req, res) => {
         let code = req.params.code;
@@ -54,6 +64,6 @@ module.exports = (app, db) => {
     app.get("/search/city/:name", searchByCity);
     app.get("/search/region/:region",searchByRegion);
     app.get("/search/postalcode/:code",searchByPostalcode);
-  //  app.get("/search/handicapType")
+    app.get("/search/handicap/:handicap",searchByHandicapType);
  //type handicap 
 }

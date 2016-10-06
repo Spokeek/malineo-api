@@ -22,7 +22,7 @@ class Comment {
 
     static getCommentByUser(connection,id){
         return new Promise((resolve, reject) => {
-                connection.query(`SELECT c.idComment,c.content,c.date FROM user_comment_location ucl
+                connection.query(`SELECT c.* FROM user_comment_location ucl
                                     JOIN comment c ON c.idComment = ucl.comment_idComment
                                     WHERE ucl.user_idUser=?`,[id],
                     (err, res) => Comment.handleRequest(err, res, resolve, reject))

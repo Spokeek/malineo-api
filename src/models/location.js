@@ -17,21 +17,21 @@ class Location {
                 (err, res) => Location.handleRequest(err, res, resolve, reject))
         });
     }
-    static getByRegion(connection,name){
+    static getByRegion(connection, name) {
 
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             let Region = require("./region")
 
-            Region.getLocation(connection,name)
-            .then(
-                (res)=> Location.handleRequest(null, res, resolve, reject),
-                (err)=> Location.handleRequest(err,null,resolve,reject)
-            )
+            Region.getLocation(connection, name)
+                .then(
+                    (res) => Location.handleRequest(null, res, resolve, reject),
+                    (err) => Location.handleRequest(err, null, resolve, reject)
+                )
         });
 
     }
 
-    static getByName(connection,name) {
+    static getByName(connection, name) {
 
         return new Promise((resolve, reject) => {
             connection.query("SELECT * FROM `location` WHERE `name` = ?", [name],
@@ -42,37 +42,49 @@ class Location {
     static getByIdApproval(IdApproval, connection) {
 
         return new Promise((resolve, reject) => {
-            connection.query("SELECT * FROM `location` AS l JOIN `user_ask_location` AS ual ON `ual.location_idLocation`=`l.idLocation` WHERE `ual.approval_idApproval` = ?", [IdApproval],
+            connection.query("SELECT l.* FROM `location` AS l JOIN `user_ask_location` AS ual ON `ual.location_idLocation`=`l.idLocation` WHERE `ual.approval_idApproval` = ?", [IdApproval],
                 (err, res) => Location.handleRequest(err, res, resolve, reject))
         });
     }
-
-    static getByPostalcode(connection,code){
+    static getByHandicapType(connection, type) {
 
         return new Promise((resolve, reject) => {
             connection.query(
-                `SELECT * FROM location l
+                `SELECT l.* FROM location AS l 
+                JOIN handicaptype_has_location AS hhl ON hhl.location_idLocation=l.idLocation
+                JOIN handicaptype AS h on h.idHandicapType = hhl.handicaptype_idHandicapType
+                WHERE h.name=?`, [type],
+                (err, res) => Location.handleRequest(err, res, resolve, reject))
+        });
+
+    }
+
+    static getByPostalcode(connection, code) {
+
+        return new Promise((resolve, reject) => {
+            connection.query(
+                `SELECT l.* FROM location l
                 JOIN city c ON c.idCity=l.city_idCity
                 WHERE c.postalcode=?`, [code],
                 (err, res) => Location.handleRequest(err, res, resolve, reject))
         });
     }
 
-    static getByCityName(connection,name){
+    static getByCityName(connection, name) {
         let City = require("./city");
-     
-        return new Promise((resolve,reject)=>{
-            City.getByName(connection,name)
-            .then(
-                (city)=>{                    
-                    Location.getByIdCity(city.pop().idCity,connection)
-                    .then(
-                          ( res) => Location.handleRequest(null, res, resolve, reject),
-                          (err)=>reject(err)
-                    )                    
-                },
-                (error)=> reject(error)
-            )
+
+        return new Promise((resolve, reject) => {
+            City.getByName(connection, name)
+                .then(
+                    (city) => {
+                        Location.getByIdCity(city.pop().idCity, connection)
+                            .then(
+                                (res) => Location.handleRequest(null, res, resolve, reject),
+                                (err) => reject(err)
+                            )
+                    },
+                    (error) => reject(error)
+                )
         });
     }
 
@@ -87,20 +99,20 @@ class Location {
     static getByIdRegion(IdRegion, connection) {
 
         return new Promise((resolve, reject) => {
-            connection.query("SELECT * FROM `location` AS l JOIN `city` AS c ON l.city_idCity = c.idCity WHERE `c.region_idRegion` = ?", [IdRegion],
+            connection.query("SELECT l.* FROM `location` AS l JOIN `city` AS c ON l.city_idCity = c.idCity WHERE `c.region_idRegion` = ?", [IdRegion],
                 (err, res) => Location.handleRequest(err, res, resolve, reject))
         });
     }
 
     static handleRequest(error, results, resolve, reject) {
 
-        if (error) 
-            reject(error);     
+        if (error)
+            reject(error);
         else
             resolve(results);
     }
-    static create(connection,location) {
-        return new Promise((resolve, reject) => {            
+    static create(connection, location) {
+        return new Promise((resolve, reject) => {
 
             connection.query("INSERT INTO location SET ?", [location],
                 (err, res) => {

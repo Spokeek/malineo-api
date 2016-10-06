@@ -22,7 +22,7 @@ class Region{
 
         return new Promise((resolve,reject)=>{
             connection.query(
-                `SELECT * FROM location l
+                `SELECT l.* FROM location l
                 JOIN city c ON c.idCity=l.city_idCity
                 JOIN region r on r.idRegion = c.region_idRegion
                 WHERE r.name = ?`,[name],
