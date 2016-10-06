@@ -61,8 +61,8 @@ module.exports = (app, db) => {
         }              
         User.login(db,user).then(
             (results) => res.status(200).send(JSON.stringify(results)),
-            (err) =>console.log(err)
-        )
+            (err) =>  res.status(401).send("invalid credentials")
+        )   
     }
 
     app.get("/user/:id", getOneUser);

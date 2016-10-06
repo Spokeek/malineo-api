@@ -41,8 +41,9 @@ class User{
         let hash = user.password
         return new Promise((resolve,reject)=>{
             bcrypt.compare(pwd,hash,(err,res)=>{                       
-                if (err || (res===false))
+                if (err || (res===false)){                
                      reject(err);
+                }
                 else{
                     resolve(user);
                 }
@@ -53,8 +54,9 @@ class User{
         return new Promise((resolve,reject)=>{
             connection.query("SELECT * FROM user WHERE mail=?",[user.mail],
             (err,res)=> User.testPwd(res.pop(), user.password).then(
-                (result)=>User.handleRequest(null,result,resolve,reject)),
+                (result)=>User.handleRequest(null,result,resolve,reject),
                 (err)=>reject(err)
+            )
             );
         });
     }

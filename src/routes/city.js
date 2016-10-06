@@ -11,19 +11,14 @@ module.exports = (app, db) => {
         let id = req.params.id;
         City.getOne(id, db).then(
 
-            (results) =>
-            res.status(200).send(JSON.stringify(results.pop())),
-            (err) => {
-                throw err
-            }
+            (results)   =>  res.status(200).send(JSON.stringify(results.pop())),
+            (err)       =>  res.status(404).send("city not found")
         );
     }
     let getAllCities = (req, res) => {
         City.getAll(db).then(
-            (results) => res.status(200).send(JSON.stringify(results)),
-            (err) => {
-                throw err
-            }
+            (results)   => res.status(200).send(JSON.stringify(results)),
+            (err)       =>  res.status(404).send("no city have been found :/")
         );
     }
     let createCity = (req, res) => {
@@ -31,16 +26,10 @@ module.exports = (app, db) => {
         let postalCode = req.body.postalCode;
         let idRegion = req.body.idRegion;
         City.create(db, name, postalCode, idRegion).then(
-            (results) => res.status(200).send(JSON.stringify(results)),
-            (err) => {
-                throw err
-            }
+            (results)   => res.status(200).send(JSON.stringify(results)),
+            (err)       => res.status(500).send("An error occured while creating this city")
         )
     }
-
-
-
-
 
     app.get("/city/:id",getOneCity);
 

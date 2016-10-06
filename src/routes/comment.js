@@ -32,16 +32,30 @@ module.exports = (app, db) => {
         Comment.create(db,content,date,idUser,idLocation)
         .then(
             (results)=>res.status(200).send(JSON.stringify(results)),
-            (err) => {throw err}
-        )
+            (err) =>res.status(500).send("we could not create this comment :(")
+        );
     }
 
     let getCommentsByUser = (req, res)=>{
+        let id = req.params.id;
 
+        Comment.getCommentByUser(db,id).then(
+            (results) =>
+                res.status(200).send(JSON.stringify(results)),
+            (err) => 
+                res.status(404).send("can't find comments for this user")
+        )
     }
 
     let getCommentByLocation = (req, res)=>{
+        let id = req.params.id;
 
+        Comment.getCommentByLocation(db,id).then(
+            (results) =>
+                res.status(200).send(JSON.stringify(results)),
+            (err) => 
+                res.status(404).send("can't find comments for this location")
+        );
     }
 
     app.get("/comment/:id",getOneComment);
@@ -52,7 +66,7 @@ module.exports = (app, db) => {
 
     app.get("/comment/location/:id", getCommentByLocation);
 
-
-
     app.post("/comment", createComment)
+
+
 }

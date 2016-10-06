@@ -1,4 +1,5 @@
 "use strict";
+const uuid = require("uuid");
 
 class Comment {
 
@@ -19,17 +20,42 @@ class Comment {
         });
     }
 
-    static handleRequest(error, results, resolve, reject) {
+    static getCommentByUser(connection,id){
+        return new Promise((resolve, reject) => {
+                connection.query(`SELECT c.idComment,c.content,c.date FROM user_comment_location ucl
+                                    JOIN comment c ON c.idComment = ucl.comment_idComment
+                                    WHERE ucl.user_idUser=?`,[id],
+                    (err, res) => Comment.handleRequest(err, res, resolve, reject))
+            });
+    }
+    static getCommentByLocation(connection,id){
 
-        if (error) reject(error);
-        resolve(results);
+        return new Promise((resolve, reject) => {
+            connection.query(`SELECT c.idComment,c.content,c.date FROM user_comment_location ucl
+                                JOIN comment c ON c.idComment = ucl.comment_idComment
+                                WHERE ucl.location_idLocation=?`,[id],
+                (err, res) => Comment.handleRequest(err, res, resolve, reject))
+        });
+    }
+
+    static handleRequest(error, results, resolve, reject) {      
+        if (error)
+            reject(error);
+        else
+            resolve(results);
     }
     static create(connection, content, date, idUser, idLocation) {
             return new Promise((resolve, reject) => {
-                let comment = {"content": content,"date": date}
+                let idComment = uuid.v4()
+                let comment = {"idComment":idComment,"content": content,"date": date};
                 connection.query("INSERT INTO `comment` SET ?", [comment],
-                    (err, res) => {
-                        let id = res.insertId;
+                    (err, res) => {                      
+
+                        Comment.createUser_Comment_Location(connection,idUser,idLocation,idComment)
+                        .then(
+                            (res)=> Comment.handleRequest(null, res, resolve, reject),
+                            (err)=>reject(err)
+                        )
                     });
             })
         }
