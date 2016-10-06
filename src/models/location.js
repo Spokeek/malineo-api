@@ -47,6 +47,17 @@ class Location {
         });
     }
 
+    static getByPostalcode(connection,code){
+
+        return new Promise((resolve, reject) => {
+            connection.query(
+                `SELECT * FROM location l
+                JOIN city c ON c.idCity=l.city_idCity
+                WHERE c.postalcode=?`, [code],
+                (err, res) => Location.handleRequest(err, res, resolve, reject))
+        });
+    }
+
     static getByCityName(connection,name){
         let City = require("./city");
      

@@ -39,9 +39,22 @@ module.exports = (app, db) => {
             (err)       =>  res.status(404).send( err) 
         )
     }
+
+    let searchByPostalcode = (req, res) => {
+        let code = req.params.code;
+
+        Location.getByPostalcode(db,code)
+        .then(
+            (results)   =>  res.status(200).send(JSON.stringify(results)),
+            (err)       =>  res.status(404).send(err)            
+        )
+    }
+
     app.get("/search/name/:name", searchByName);
     app.get("/search/city/:name", searchByCity);
     app.get("/search/region/:region",searchByRegion);
+    app.get("/search/postalcode/:code",searchByPostalcode);
+  //  app.get("/search/handicapType")
 // code postal
  //region
  //type handicap 
