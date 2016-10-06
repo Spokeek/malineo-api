@@ -31,32 +31,36 @@ class User{
     }
     
     static handleRequest(error,results,resolve,reject){
-        console.log(error,results)
-        if (error) reject(error);     
-        resolve(results);
+
+        if (error)
+            reject(error);     
+        else
+            resolve(results);
     }
-    static testPwd(hash,pwd){
+    static testPwd(user,pwd){
+        let hash = user.password
         return new Promise((resolve,reject)=>{
-            bcrypt.compare(pwd,hash,(err,res)=>{
-                console.log(res)
-                if (err | (res===false)) reject(err);
-                resolve(res);
+            bcrypt.compare(pwd,hash,(err,res)=>{                       
+                if (err || (res===false))
+                     reject(err);
+                else{
+                    resolve(user);
+                }
             })
         });
     }
     static login(connection, user){
         return new Promise((resolve,reject)=>{
             connection.query("SELECT * FROM user WHERE mail=?",[user.mail],
-            (err,res)=> User.testPwd(res.pop().password, user.password).then(
-                ()=>User.handleRequest(err,res,resolve,reject)),
-                ()=>reject()
+            (err,res)=> User.testPwd(res.pop(), user.password).then(
+                (result)=>User.handleRequest(null,result,resolve,reject)),
+                (err)=>reject(err)
             );
         });
     }
-    static create(connection, user){
+  static create(connection, user){
      
         return new Promise((resolve,reject)=>{
-
             connection.query("INSERT INTO `user` SET ?",[user],
             (err,res)=> User.handleRequest(err,res,resolve,reject))
         })

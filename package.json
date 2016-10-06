@@ -26,8 +26,7 @@
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "lodash": "^4.16.3",  
-    "mysql": "^2.11.1",
-    "orm": "^3.1.0",
+    "mysql": "^2.11.1",  
     "uuid": "^2.0.3"
   },
   "devDependencies": {
