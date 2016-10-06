@@ -1,5 +1,21 @@
 # malineo-api 
 
+before running the project, pls create the database,
+the create a file in src/config/env.js
+with the folowing content : 
+```json
+
+module.exports = {
+    host :"127.0.0.1",
+    user :"",
+    password :"",
+    port : "3306",
+    database : "malineo",
+    saltRounds : 10
+};
+
+```
+
 
 
 ROUTES
