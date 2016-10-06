@@ -47,7 +47,10 @@ class User{
     static login(connection, user){
         return new Promise((resolve,reject)=>{
             connection.query("SELECT * FROM user WHERE mail=?",[user.mail],
-            (err,res)=> User.handleRequest(err,res,resolve,reject))
+            (err,res)=> User.testPwd(res.pop().password, user.password).then(
+                ()=>User.handleRequest(err,res,resolve,reject)),
+                ()=>reject()
+            );
         });
     }
     static create(connection, user){
