@@ -17,8 +17,21 @@ class Location {
                 (err, res) => Location.handleRequest(err, res, resolve, reject))
         });
     }
+    static getByRegion(connection,name){
 
-    static getByName(name, connection) {
+        return new Promise((resolve,reject) => {
+            let Region = require("./region")
+
+            Region.getLocation(connection,name)
+            .then(
+                (res)=> Location.handleRequest(null, res, resolve, reject),
+                (err)=> Location.handleRequest(err,null,resolve,reject)
+            )
+        });
+
+    }
+
+    static getByName(connection,name) {
 
         return new Promise((resolve, reject) => {
             connection.query("SELECT * FROM `location` WHERE `name` = ?", [name],
@@ -31,6 +44,24 @@ class Location {
         return new Promise((resolve, reject) => {
             connection.query("SELECT * FROM `location` AS l JOIN `user_ask_location` AS ual ON `ual.location_idLocation`=`l.idLocation` WHERE `ual.approval_idApproval` = ?", [IdApproval],
                 (err, res) => Location.handleRequest(err, res, resolve, reject))
+        });
+    }
+
+    static getByCityName(connection,name){
+        let City = require("./city");
+     
+        return new Promise((resolve,reject)=>{
+            City.getByName(connection,name)
+            .then(
+                (city)=>{                    
+                    Location.getByIdCity(city.pop().idCity,connection)
+                    .then(
+                          ( res) => Location.handleRequest(null, res, resolve, reject),
+                          (err)=>reject(err)
+                    )                    
+                },
+                (error)=> reject(error)
+            )
         });
     }
 
@@ -52,8 +83,10 @@ class Location {
 
     static handleRequest(error, results, resolve, reject) {
 
-        console.log("->",error);
-        resolve(results);
+        if (error) 
+            reject(error);     
+        else
+            resolve(results);
     }
     static create(connection,location) {
         return new Promise((resolve, reject) => {            

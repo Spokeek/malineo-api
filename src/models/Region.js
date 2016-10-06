@@ -18,6 +18,19 @@ class Region{
         })
     }
     
+    static getLocation(connection,name){
+
+        return new Promise((resolve,reject)=>{
+            connection.query(
+                `SELECT * FROM location l
+                JOIN city c ON c.idCity=l.city_idCity
+                JOIN region r on r.idRegion = c.region_idRegion
+                WHERE r.name = ?`,[name],
+            (err,res)=> Region.handleRequest(err,res,resolve,reject))
+        })
+
+    }
+
     static handleRequest(error,results,resolve,reject){
 
         if (error) reject(error);     

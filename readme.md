@@ -34,12 +34,12 @@ USER :
 ```
 
 - get one user  : /user/:id
-- get all users :/user
+- get all users : /user
 --------
 
 LOCATION : 
 
-create : 
+create : POST /loacation
 
 ```json
 
@@ -51,5 +51,26 @@ create :
     "contact" : "",
     "idCity" : ""
 }
+
+```
+-------
+
+CITY : 
+ get by name : GET /city/name/:name
+
+ get by id   : GET /city/:id
+
+ get all     : GET /city
+
+create       : POST /city
+
+payload : 
+```json
+
+ {
+    "name":"",
+    "postalCode":"",
+    "idRegion":""
+ }
 
 ```

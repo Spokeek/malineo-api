@@ -11,7 +11,15 @@ class City{
             (err,res)=> City.handleRequest(err,res,resolve,reject))
         });
     }
-
+    static getByName(connection,name){
+        
+        return new Promise((resolve,reject)=>{
+            connection.query("SELECT * from `city` WHERE `name`= ?",[name],
+                (err,res)=> City.handleRequest(err,res,resolve,reject)          
+            )
+        });
+    }
+           
     static getAll(connection){
 
         return new Promise((resolve,reject)=>{
@@ -22,8 +30,10 @@ class City{
     
     static handleRequest(error,results,resolve,reject){
 
-        if (error) reject(error);     
-        resolve(results);
+        if (error) 
+            reject(error);     
+        else
+            resolve(results);
     }
     static create(connection, name,postalCode,idRegion){
         return new Promise((resolve,reject)=>{
