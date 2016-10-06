@@ -36,7 +36,13 @@ class User{
         resolve(results);
     }
     static testPwd(hash,pwd){
-
+        return new Promise((resolve,reject)=>{
+            bcrypt.compare(pwd,hash,(err,res)=>{
+                console.log(res)
+                if (err | (res===false)) reject(err);
+                resolve(res);
+            })
+        });
     }
     static login(connection, user){
         return new Promise((resolve,reject)=>{
